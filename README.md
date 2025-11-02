@@ -50,7 +50,8 @@ Then visit:
 👉 http://localhost:3000
 
 ---
-##🗂️ Folder Structure
+
+## 🗂️ Folder Structure
 .
 ├── public/
 │   ├── style.css
@@ -70,7 +71,8 @@ Then visit:
 
 
 ---
-##🧠 Core Logic
+
+## 🧠 Core Logic
 Users register and log in via Passport local strategy.
 Once logged in, they can add messages to the shared board.
 Messages are stored in MongoDB and rendered dynamically using EJS.
@@ -78,14 +80,16 @@ Users can like (☁️) or dislike (🌧️) dreams, or delete (🗑️) their o
 Logout clears the session, returning them to the login screen.
 
 ---
-##💻 Example
+
+## 💻 Example
 A typical dream entry looks like:
 Name: leeanneeagan@example.com
 Message: “Move to Paris and open a cozy coffee shop!”
 Likes: ☁️☁️☁️
 
 ---
-##🌠 Future Enhancements
+
+## 🌠 Future Enhancements
 User profile pages with uploaded dream images
 Category filters (career, travel, personal growth)
 Public/private dream toggles
@@ -93,12 +97,14 @@ Notifications for dream “likes”
 Cloud-themed animations ☁️💭
 
 ---
-##🪶 Author
+
+## 🪶 Author
 Leeanne Eagan
 🌙 Turning ideas into interactive realities — one dream at a time.
 GitHub
 
 ---
-##📜 License
+
+## 📜 License
 This project is licensed under the MIT License — feel free to use, remix, and make your own dream board!
 
