@@ -3,13 +3,10 @@ This project was built using a template as a starting point and customized to fi
 All final code and design choices were reviewed, tested, and implemented by the author.
  -->
 
-
-
-
-<!doctype html>
+ <!doctype html>
 <html>
 <head>
-    <title>Dream Board 🌙✨</title>
+    <title>Dream Diary 🌙✨</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
@@ -18,16 +15,13 @@ All final code and design choices were reviewed, tested, and implemented by the 
 <div class="container">
 <div class="col-sm-6 col-sm-offset-3">
 
-    <h1><span class="fa fa-sign-in"></span> Signup</h1>
+    <h1> Signup 🌙✨</h1>
 
     <% if (message.length > 0) { %>
         <div class="alert alert-danger"><%= message %></div>
     <% } %>
 
-    <!-- LOGIN FORM -->
-    <form action="/signup" method="post">
-
-
+  <form action="/signup" method="post">
 
 <div class="form-group">
   <label><i class="fa fa-cloud"></i> Email</label>
@@ -38,32 +32,11 @@ All final code and design choices were reviewed, tested, and implemented by the 
   <input type="password" class="form-control" name="password">
 </div>
 
-
-
-
-        <!-- <div class="form-group">
-            <label>Email</label>
-            <input type="text" class="form-control" name="email">
-        </div>
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" class="form-control" name="password">
-        </div> -->
-
-
 <button type="submit" class="btn btn-warning btn-lg">
   <i class="fa fa-magic"></i> Signup
 </button>
 
-
-
-        <!-- <button type="submit" class="btn btn-warning btn-lg">Signup</button> -->
-
-
-
-
-
-    </form>
+ </form>
 
     <hr>
 

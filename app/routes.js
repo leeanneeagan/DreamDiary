@@ -1,132 +1,165 @@
+// app/routes.js
 module.exports = function(app, passport, db) {
 
-// normal routes ===============================================================
+  // NORMAL ROUTES ===============================================================
 
-    // show the home page (will also have our login links)
-    app.get('/', function(req, res) {
-        res.render('index.ejs');
-    });
+  // home page
+  app.get('/', function(req, res) {
+    res.render('index.ejs');
+  });
 
-    // PROFILE SECTION =========================
-    app.get('/profile', isLoggedIn, function(req, res) {
-        db.collection('messages').find().toArray((err, result) => {
-          if (err) return console.log(err)
-          res.render('profile.ejs', {
-            user : req.user,
-            messages: result
-          })
-        })
-    });
-
-    // LOGOUT ==============================
-    app.get('/logout', function(req, res) {
-        req.logout(() => {
-          console.log('User has logged out!')
-        });
-        res.redirect('/');
-    });
-
-// message board routes ===============================================================
-
-    app.post('/messages', (req, res) => {
-      db.collection('messages').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0}, (err, result) => {
+  // PROFILE SECTION ===========================================================
+  app.get('/profile', isLoggedIn, function(req, res) {
+    // first get messages
+    db.collection('messages').find().toArray((err, messages) => {
+      if (err) return console.log(err)
+      // then get dreams for this user
+      db.collection('dreams').find({ userId: req.user._id }).toArray((err, dreams) => {
         if (err) return console.log(err)
-        console.log('saved to database')
-        res.redirect('/profile')
+        res.render('profile.ejs', {
+          user: req.user,
+          messages,
+          dreams
+        })
       })
     })
+  });
 
-    app.put('/messages', (req, res) => {
-      db.collection('messages')
-      .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
-        $set: {
-          thumbUp:req.body.thumbUp + 1
+  // LOGOUT ====================================================================
+  app.get('/logout', function(req, res) {
+    req.logout(() => {
+      console.log('User has logged out!')
+    });
+    res.redirect('/');
+  });
+
+  // MESSAGE BOARD ROUTES =======================================================
+  app.post('/messages', (req, res) => {
+    db.collection('messages').save({
+      name: req.body.name, 
+      msg: req.body.msg, 
+      thumbUp: 0, 
+      thumbDown: 0
+    }, (err, result) => {
+      if (err) return console.log(err)
+      console.log('Message saved to database')
+      res.redirect('/profile')
+    })
+  });
+
+  app.put('/messages', (req, res) => {
+    db.collection('messages')
+      .findOneAndUpdate(
+        { name: req.body.name, msg: req.body.msg },
+        { $set: { thumbUp: req.body.thumbUp + 1 } },
+        { sort: { _id: -1 }, upsert: true },
+        (err, result) => {
+          if (err) return res.send(err)
+          res.send(result)
         }
-      }, {
-        sort: {_id: -1},
-        upsert: true
-      }, (err, result) => {
-        if (err) return res.send(err)
-        res.send(result)
-      })
-    })
+      )
+  });
 
-    app.put('/messagesdown', (req, res) => {
-      db.collection('messages')
-      .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
-        $set: {
-          thumbUp:req.body.thumbUp - 1
+  app.put('/messagesdown', (req, res) => {
+    db.collection('messages')
+      .findOneAndUpdate(
+        { name: req.body.name, msg: req.body.msg },
+        { $set: { thumbUp: req.body.thumbUp - 1 } },
+        { sort: { _id: -1 }, upsert: true },
+        (err, result) => {
+          if (err) return res.send(err)
+          res.send(result)
         }
-      }, {
-        sort: {_id: -1},
-        upsert: true
-      }, (err, result) => {
-        if (err) return res.send(err)
-        res.send(result)
-      })
-    })
+      )
+  });
 
-    app.delete('/messages', (req, res) => {
-      db.collection('messages').findOneAndDelete({name: req.body.name, msg: req.body.msg}, (err, result) => {
+  app.delete('/messages', (req, res) => {
+    db.collection('messages').findOneAndDelete(
+      { name: req.body.name, msg: req.body.msg },
+      (err, result) => {
         if (err) return res.send(500, err)
         res.send('Message deleted!')
+      }
+    )
+  });
+
+  // DREAM ROUTES ================================================================
+  app.get('/dreams', isLoggedIn, (req, res) => {
+    db.collection('dreams').find({ userId: req.user._id }).toArray((err, result) => {
+      if (err) return console.log(err)
+      res.render('profile.ejs', {
+        user: req.user,
+        dreams: result
       })
     })
+  });
 
-// =============================================================================
-// AUTHENTICATE (FIRST LOGIN) ==================================================
-// =============================================================================
+  app.post('/dreams', isLoggedIn, (req, res) => {
+    db.collection('dreams').save(
+      {
+        title: req.body.title,
+        content: req.body.content,
+        userId: req.user._id,
+        createdAt: new Date() // manually add timestamp
+      },
+      (err, result) => {
+        if (err) return console.log(err)
+        console.log('Dream saved to database')
+        res.redirect('/profile')
+      }
+    )
+  })
+  
 
-    // locally --------------------------------
-        // LOGIN ===============================
-        // show the login form
-        app.get('/login', function(req, res) {
-            res.render('login.ejs', { message: req.flash('loginMessage') });
-        });
+  app.delete('/dreams', isLoggedIn, (req, res) => {
+    db.collection('dreams').findOneAndDelete({
+      title: req.body.title,
+      content: req.body.content,
+      userId: req.user._id
+    }, (err, result) => {
+      if (err) return res.send(500, err)
+      res.send('Dream deleted!')
+    })
+  });
 
-        // process the login form
-        app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/login', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-        }));
+  // AUTHENTICATION ROUTES =======================================================
 
-        // SIGNUP =================================
-        // show the signup form
-        app.get('/signup', function(req, res) {
-            res.render('signup.ejs', { message: req.flash('signupMessage') });
-        });
+  // LOGIN
+  app.get('/login', function(req, res) {
+    res.render('login.ejs', { message: req.flash('loginMessage') });
+  });
 
-        // process the signup form
-        app.post('/signup', passport.authenticate('local-signup', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/signup', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-        }));
+  app.post('/login', passport.authenticate('local-login', {
+    successRedirect: '/profile',
+    failureRedirect: '/login',
+    failureFlash: true
+  }));
 
-// =============================================================================
-// UNLINK ACCOUNTS =============================================================
-// =============================================================================
-// used to unlink accounts. for social accounts, just remove the token
-// for local account, remove email and password
-// user account will stay active in case they want to reconnect in the future
+  // SIGNUP
+  app.get('/signup', function(req, res) {
+    res.render('signup.ejs', { message: req.flash('signupMessage') });
+  });
 
-    // local -----------------------------------
-    app.get('/unlink/local', isLoggedIn, function(req, res) {
-        var user            = req.user;
-        user.local.email    = undefined;
-        user.local.password = undefined;
-        user.save(function(err) {
-            res.redirect('/profile');
-        });
+  app.post('/signup', passport.authenticate('local-signup', {
+    successRedirect: '/profile',
+    failureRedirect: '/signup',
+    failureFlash: true
+  }));
+
+  // UNLINK ACCOUNTS
+  app.get('/unlink/local', isLoggedIn, function(req, res) {
+    var user = req.user;
+    user.local.email = undefined;
+    user.local.password = undefined;
+    user.save(function(err) {
+      res.redirect('/profile');
     });
+  });
 
 };
 
-// route middleware to ensure user is logged in
+// ROUTE MIDDLEWARE ===========================================================
 function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
-        return next();
-
-    res.redirect('/');
+  if (req.isAuthenticated()) return next();
+  res.redirect('/');
 }

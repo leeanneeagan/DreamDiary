@@ -8,7 +8,7 @@ All final code and design choices were reviewed, tested, and implemented by the 
 <!doctype html>
 <html>
 <head>
-   <title>Dream Board 🌙✨</title>
+   <title>Dream Diary 🌙✨</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
@@ -17,7 +17,7 @@ All final code and design choices were reviewed, tested, and implemented by the 
 <div class="container">
 <div class="col-sm-6 col-sm-offset-3">
 
-    <h1><span class="fa fa-sign-in"></span> Login</h1>
+    <h1>Login 🌙✨</h1>
 
     <% if (message.length > 0) { %>
         <div class="alert alert-danger"><%= message %></div>
@@ -26,11 +26,11 @@ All final code and design choices were reviewed, tested, and implemented by the 
     <!-- LOGIN FORM -->
     <form action="/login" method="post">
         <div class="form-group">
-            <label>Email</label>
+            <label><i class="fa fa-cloud"></i> Email</label>
             <input type="text" class="form-control" name="email">
         </div>
         <div class="form-group">
-            <label>Password</label>
+            <label><i class="fa fa-magic"></i> Password</label>
             <input type="password" class="form-control" name="password">
         </div>
 

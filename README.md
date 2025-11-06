@@ -1,12 +1,15 @@
-# 🌙 Dream Board
+# Dream Diary🌙✨
+---
+![Alt text](/DreamDiary.png)
 
-**Dream Board** is a full-stack web application that lets users sign up, log in, and post their dreams, goals, or affirmations to a shared digital vision board.  
+---
+**Dream Diary** is a full-stack web application that lets user sign up, log in, and post their dreams by date, edit, add, delete entries into a digital Dream Diary log.  
 
 It’s built with **Node.js**, **Express**, **MongoDB**, and **EJS**, featuring user authentication and CRUD functionality — all wrapped in a starry aesthetic. ✨
 
 ---
 
-## 🧩 Tech Stack
+##  Tech Stack
 
 - **Frontend:** EJS templating + Bootstrap + Custom CSS (dreamy gradient theme)
 - **Backend:** Node.js + Express.js
@@ -16,18 +19,18 @@ It’s built with **Node.js**, **Express**, **MongoDB**, and **EJS**, featuring 
 
 ---
 
-## 💫 Features
+##  Features
 
-- 🪄 User authentication (Signup / Login / Logout)  
-- ☁️ Create and post messages (your dreams/goals)  
-- 🌧️ Like, dislike, or delete posts  
-- 💬 View all users’ dreams in one collective board  
-- 🖼️ Responsive, modern UI with custom styling  
-- 🔒 Passwords hashed and secured with bcrypt  
+-  User authentication (Signup / Login / Logout)  
+-  Create and post diary entries
+-  Add, edit, or delete posts  
+-  View all users’ dreams in one collective dream log 
+-  Responsive, modern UI with custom styling  
+-  Passwords hashed and secured with bcrypt  
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### 1. Clone this repo
 ```bash
@@ -47,12 +50,12 @@ SESSION_SECRET=your_secret_key
 npm start
 
 Then visit:
-👉 http://localhost:3000
+ http://localhost:3000
 
 ```
 ---
 
-## 🗂️ Folder Structure
+##  Folder Structure
 ```
 .
 ├── public/
@@ -74,7 +77,7 @@ Then visit:
 
 ---
 
-## 🧠 Core Logic
+##  Core Logic
 - Users register and log in via Passport local strategy.
 - Once logged in, they can add messages to the shared board.
 - Messages are stored in MongoDB and rendered dynamically using EJS.
@@ -83,7 +86,7 @@ Then visit:
 
 ---
 
-## 💻 Example
+##  Example
 - A typical dream entry looks like:
 - Name: leeanneeagan@example.com
 - Message: “Move to Paris and open a cozy coffee shop!”
@@ -91,7 +94,7 @@ Then visit:
 
 ---
 
-## 🌠 Future Enhancements
+##  Future Enhancements
 - User profile pages with uploaded dream images
 - Category filters (career, travel, personal growth)
 - Public/private dream toggles
@@ -100,13 +103,13 @@ Then visit:
 
 ---
 
-## 🪶 Author
+##  Author
 Leeanne Eagan
 🌙 Turning ideas into interactive realities — one dream at a time.
 GitHub
 
 ---
 
-## 📜 License
+##  License
 This project is licensed under the MIT License — feel free to use, remix, and make your own dream board!
 

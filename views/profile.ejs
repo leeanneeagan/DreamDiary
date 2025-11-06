@@ -1,171 +1,69 @@
-<!-- Project Foundation  
-This project was built using a template as a starting point and customized to fit the app’s unique features and design.  
-All final code and design choices were reviewed, tested, and implemented by the author.
- -->
-<!-- //  AI Assistance
-// Parts of this code were assisted with the use of ChatGPT as a learning tool.
-// All final code was reviewed, tested, and modified by the project author.
- -->
-
-
-
-
-
-
-<!-- <!doctype html>
-<html>
-<head>
-    <title>Dream Board</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="container">
-
-    <div class="page-header text-center">
-        <h1><span class="fa fa-cloud"></span> Dream Board</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-    </div>
-
-    <div class="row"> -->
-
-        <!-- LOCAL INFORMATION
-        <div class="col-sm-6">
-            <div class="well">
-                <h3><span class="fa fa-user"></span> Local</h3>
-
-                <% if (user.local.email) { %>
-                    <p>
-                        <strong>id</strong>: <%= user._id %><br>
-                        <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
-                    </p>
-
-                    <a href="/unlink/local" class="btn btn-default">Unlink</a>
-                <% } else { %>
-                    <a href="/connect/local" class="btn btn-default">Connect Local</a>
-                <% } %>
-
-            </div>
-        </div> -->
-
-<!-- 
-        <div class="col-sm-6">
-          <h3>Messages</h3>
-          <ul class="messages">
-          <% for(var i=0; i<messages.length; i++) {%>
-            <li class="message">
-              <span><%= messages[i].name %></span>
-              <span><%= messages[i].msg %></span>
-              <span><%= messages[i].cloud %></span>
-              <span> <i class="fa fa-cloud" aria-hidden="true"></i> </span>
-              <span> <i class="fa fa-cloud" aria-hidden="true"></i> </span>
-              <span><i class="fa fa-trash" aria-hidden="true"></i></span>
-            </li>
-          <% } %>
-          </ul>
-
-          <h2>Add a message</h2>
-        <% if (user.local.email) { %>
-          <form action="/messages" method="POST">
-            <input type="text" value="<%= user.local.email %>" name="name">
-            <input type="text" placeholder="message" name="msg">
-            <button type="submit">Submit</button>
-          </form>
-        </div>
-        <% } %>
-
-</div>
-
-<script src="main.js"></script>
-
-</body>
-</html> -->
-
-
 <!doctype html>
 <html>
 <head>
-  <title>Dream Board 🌙✨</title>
+  <title>Dream Diary 🌙✨</title>
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
+
+   
     <div class="page-header text-center">
-      <h1><span class="fa fa-cloud"></span> Dream Board 🌙✨</h1>
+      <h1><span class="fa fa-cloud"></span> Dream Diary 🌙✨</h1>
       <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
     <div class="row">
+
+      
       <div class="col-sm-6">
-        <h3>Messages</h3>
+        <h3>Your Dreams</h3>
 
+        <% if (dreams && dreams.length === 0) { %>
+          <p>No dreams yet — add your first one below!</p>
+        <% } %>
 
-<ul class="messages">
-  <% for (var i = 0; i < messages.length; i++) { %>
-    <li class="message">
-      <span><%= messages[i].name %></span>
-      <span><%= messages[i].msg %></span>
+        <% dreams.forEach(dream => { %>
+          <div class="entry mb-3 p-2 border rounded">
+            <div class="entry-header">
+              <strong class="entry-title"><%= dream.title %></strong>
+            </div>
+            <div class="entry-content">
+              <p><%= dream.content %></p>
+            </div>
+            <% if(dream.mood){ %>
+              <div class="entry-mood"><em>Mood: <%= dream.mood %></em></div>
+            <% } %>
+            <div class="entry-date"><small>Saved on <%= new Date(dream.createdAt).toLocaleString() %></small></div>
+            <div class="entry-actions mt-2">
+              <a href="/dreams/<%= dream._id %>/edit" class="btn btn-info btn-xs">
+                <i class="fa fa-pencil"></i> Edit
+              </a>
+              <button class="btn btn-danger btn-xs delete-btn" data-id="<%= dream._id %>">
+                <i class="fa fa-trash"></i> Delete
+              </button>
+            </div>
+          </div>
+        <% }) %>
 
-      <!-- Display number -->
-      <span class="vote-count"><%= messages[i].votes || 0 %></span>
-
-      <!-- Cloud = like -->
-      <span class="like-btn">
-        <i class="fa fa-cloud" aria-hidden="true"></i>
-      </span>
-
-      <!-- Rain = dislike -->
-      <span class="dislike-btn">
-        <i class="fa fa-tint" aria-hidden="true"></i>
-      </span>
-
-      <!-- Trash -->
-      <span class="trash-btn">
-        <i class="fa fa-trash" aria-hidden="true"></i>
-      </span>
-    </li>
-  <% } %>
-</ul>
-
-
-
-
-        <!-- <ul class="messages">
-          <% for (var i = 0; i < messages.length; i++) { %>
-            <li class="message">
-              <span><%= messages[i].name %></span>
-              <span><%= messages[i].msg %></span>
-              <span><%= messages[i].cloud %></span>
-
-              Magic icon for "like" / upvote 
-              <span><i class="fa fa-magic" aria-hidden="true"></i></span>
-
-               Cloud icon for "dislike" / downvote 
-              <span><i class="fa fa-cloud" aria-hidden="true"></i></span>
-
-               Trash icon for delete
-              <span><i class="fa fa-trash" aria-hidden="true"></i></span>
-            </li>
-          <% } %>
-        </ul> -->
-
-        <h2>Add a message</h2>
+      
+        <h3>Add a New Dream</h3>
         <% if (user.local.email) { %>
-          <form action="/messages" method="POST">
-            <input type="text" value="<%= user.local.email %>" name="name">
-            <input type="text" placeholder="message" name="msg">
-            <button type="submit">Submit</button>
+          <form action="/dreams" method="POST">
+            <input type="text" placeholder="Title" name="title" required class="form-control mb-2">
+            <textarea placeholder="Describe your dream..." name="content" required class="form-control mb-2"></textarea>
+            <input type="text" placeholder="Mood (optional)" name="mood" class="form-control mb-2">
+            <button type="submit" class="btn btn-success">Save Dream</button>
           </form>
         <% } %>
+
       </div>
     </div>
+
   </div>
 
   <script src="main.js"></script>
 </body>
 </html>
-
